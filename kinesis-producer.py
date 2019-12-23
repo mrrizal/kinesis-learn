@@ -39,7 +39,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.stream_name is not None and args.create_stream:
-        resp = create_stream('testing', args.shard_count)
+        resp = create_stream(args.stream_name, args.shard_count)
         print(resp)
 
     conditions = [
