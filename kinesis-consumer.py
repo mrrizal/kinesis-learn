@@ -1,5 +1,6 @@
 import time
 import argparse
+import json
 from pprint import pprint
 from utils import get_client
 
@@ -14,7 +15,8 @@ def get_data(stream_name):
         while True:
             out = client.get_records(ShardIterator=shard_it, Limit=5)
             shard_it = out['NextShardIterator']
-            pprint(out)
+            records = out.get("Records")
+            print(records)
             time.sleep(1.0)
 
 

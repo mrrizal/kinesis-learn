@@ -9,17 +9,10 @@ def create_stream(stream_name, shard_count=1):
     return resp
 
 
-def put_data(stream_name, partitionkey):
+def put_data(stream_name, partitionkey, data):
     client = get_client(service_name='kinesis')
-    for i in range(50):
-        data = {
-            'name': 'user {}'.format(i + 1),
-            'username': 'user{}'.format(i + 1)
-        }
-        resp = client.put_record(StreamName=stream_name,
-                          Data=json.dumps(data),
-                          PartitionKey=partitionkey)
-        print(resp)
+    resp = client.put_record(StreamName=stream_name, Data=data, PartitionKey=partitionkey)
+    print(resp)
 
 
 if __name__ == '__main__':
@@ -28,8 +21,8 @@ if __name__ == '__main__':
                         action='store_true',
                         help='create kinesis stream')
     parser.add_argument('--put-data',
-                        action='store_true',
-                        help='put sample data into kinesis stream')
+                        type=str,
+                        help='put everything you want at kinesis stream')
     parser.add_argument('--stream-name', help='stream name')
     parser.add_argument('--shard-count',
                         default=1,
@@ -50,4 +43,4 @@ if __name__ == '__main__':
     ]
 
     if False not in conditions:
-        put_data(args.stream_name, args.partitionkey)
+        put_data(args.stream_name, args.partitionkey, args.put_data)
